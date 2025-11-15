@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ImpactAlert Driver Interface</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        button {
+            font-size: 24px;
+            padding: 20px 40px;
+            cursor: pointer;
+        }
+        #status {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<h1>ImpactAlert Driver Interface</h1>
+<p>Click the button below to report a crash</p>
+
+<button onclick="reportCrash()">Report Crash</button>
+
+<div id="status">No crash reported yet.</div>
+
+<script>
+    function reportCrash() {
+        if (!navigator.geolocation) {
+            alert("Geolocation is not supported by your browser");
+            return;
+        }
+
+        navigator.geolocation.getCurrentPosition(async (position) => {
+            const driverLat = position.coords.latitude;
+            const driverLon = position.coords.longitude;
+
+            try {
+                const response = await fetch('/crash', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        lat: driverLat,
+                        lon: driverLon,
+                        message: `Crash Accident ping from:\nDriver's Coords: ${driverLat}, ${driverLon}`
+                    })
+                });
+
+                const data = await response.json();
+                document.getElementById('status').innerText = 
+                    `Crash reported! Nearest rescue team: ${data.nearest_center}`;
+            } catch (err) {
+                console.error(err);
+                document.getElementById('status').innerText = "Error reporting crash!";
+            }
+        }, (error) => {
+            alert("Unable to retrieve your location: " + error.message);
+        });
+    }
+
+</script>
+
+</body>
+</html>
