@@ -1,4 +1,4 @@
-## Impact Alert
+# Impact Alert
 
-# Python - Flask (Backend)
-# HTML / JavaScript
+## Python - Flask (Backend)
+## HTML / JavaScript
