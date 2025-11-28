@@ -59,7 +59,7 @@ def crash_report():
     # prepare crash info
     crash_info = {
         "driver_lat": driver_lat,
-        "driver_lon": driver_lon,
+        "driver_lon": driver_lon,   
         "nearest_center": nearest["name"],
         "center_id": nearest["id"],
         "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
